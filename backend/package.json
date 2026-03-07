@@ -1,0 +1,39 @@
+{
+  "name": "car-platform-backend",
+  "version": "1.0.0",
+  "description": "Car marketplace backend (MVP) - Express, MongoDB, TypeScript",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "lint": "tsc --noEmit",
+    "seed": "ts-node-dev --transpile-only src/seed/seed.ts"
+  },
+  "dependencies": {
+    "bcrypt": "*",
+    "cors": "*",
+    "dotenv": "*",
+    "express": "*",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "*",
+    "helmet": "*",
+    "jsonwebtoken": "*",
+    "mongoose": "*",
+    "morgan": "*",
+    "multer": "*",
+    "zod": "*"
+  },
+  "devDependencies": {
+    "@types/cors": "*",
+    "@types/express": "*",
+    "@types/express-rate-limit": "*",
+    "@types/jsonwebtoken": "*",
+    "@types/mongoose": "*",
+    "@types/morgan": "*",
+    "@types/multer": "*",
+    "@types/node": "*",
+    "ts-node-dev": "*",
+    "typescript": "*"
+  }
+}
