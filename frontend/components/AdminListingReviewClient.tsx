@@ -145,13 +145,23 @@ export function AdminListingReviewClient({
     }
   }
 
+  const submittedLabel = listing
+    ? new Date(listing.createdAt).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      })
+    : '';
+
   if (!listing) {
     return (
       <div className="space-y-6 pb-8">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-700 via-gray-800 to-black p-8 shadow-xl">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-purple-600 to-indigo-700 p-8 shadow-xl">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/15 rounded-full -mr-32 -mt-32" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24" />
           <div className="relative">
             <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-              <span className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
+              <span className="w-12 h-12 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-md shadow-purple-900/20">
                 <svg
                   className="w-7 h-7 text-white"
                   fill="none"
@@ -173,7 +183,7 @@ export function AdminListingReviewClient({
               </span>
               Listing not found
             </h1>
-            <p className="text-gray-200 mt-2 text-base max-w-xl">
+            <p className="text-purple-50 mt-2 text-base max-w-xl">
               This listing either does not exist, or it is no longer pending review.
             </p>
           </div>
@@ -183,7 +193,10 @@ export function AdminListingReviewClient({
           <p className="text-base text-gray-600 mb-6">
             It may have already been approved, rejected, deleted, or never existed.
           </p>
-          <Button asChild className="bg-primary hover:bg-purple-800 text-white font-semibold">
+          <Button
+            asChild
+            className="bg-gradient-to-r from-primary to-purple-700 hover:from-primary hover:to-purple-800 text-white font-semibold rounded-xl"
+          >
             <Link href="/admin/listings">Back to pending listings</Link>
           </Button>
         </div>
@@ -199,13 +212,13 @@ export function AdminListingReviewClient({
   return (
     <div className="space-y-6 pb-8">
       {/* Header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500 via-orange-600 to-red-600 p-8 shadow-xl">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32" />
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-purple-600 to-indigo-700 p-8 shadow-xl">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/15 rounded-full -mr-32 -mt-32" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24" />
         <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div>
             <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-              <span className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+              <span className="w-12 h-12 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-md shadow-purple-900/20">
                 <svg
                   className="w-7 h-7 text-white"
                   fill="none"
@@ -222,18 +235,18 @@ export function AdminListingReviewClient({
               </span>
               Review Listing
             </h1>
-            <p className="text-amber-50 mt-2 text-base">{title}</p>
-            <p className="text-xs text-amber-100/80 mt-1 font-mono">
+            <p className="text-purple-50 mt-2 text-base">{title}</p>
+            <p className="text-xs text-purple-100/80 mt-1 font-mono">
               ID: {listing._id}{' '}
-              <span className="mx-2 inline-block h-1 w-1 rounded-full bg-amber-200 align-middle" />{' '}
-              Submitted {new Date(listing.createdAt).toLocaleString()}
+              <span className="mx-2 inline-block h-1 w-1 rounded-full bg-purple-200 align-middle" />{' '}
+              Submitted {submittedLabel}
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
             <Button
               asChild
               variant="outline"
-              className="bg-transparent border-white/40 text-white hover:bg-white/10 hover:text-white"
+              className="bg-white/10 border-white/25 text-white hover:bg-white/20 hover:text-white rounded-xl"
             >
               <Link href="/admin/listings">Back to list</Link>
             </Button>
@@ -273,14 +286,24 @@ export function AdminListingReviewClient({
                   </div>
                 )}
               </div>
-              <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-black/60 text-xs font-semibold text-white backdrop-blur-sm capitalize">
-                {listing.status}
+              <div className="absolute top-4 left-4">
+                <span
+                  className={`inline-flex px-3 py-1.5 rounded-full text-xs font-bold uppercase backdrop-blur-sm border ${
+                    listing.status === 'pending'
+                      ? 'bg-purple-600/20 border-white/20 text-white'
+                      : listing.status === 'live'
+                        ? 'bg-emerald-500/20 border-white/20 text-white'
+                        : 'bg-white/10 border-white/20 text-white'
+                  }`}
+                >
+                  {listing.status}
+                </span>
               </div>
             </div>
             <div className="p-6 space-y-3">
               <div className="flex items-center justify-between gap-4">
                 <p className="text-xl font-bold text-gray-900">{title}</p>
-                <p className="text-lg font-bold text-green-700">
+                <p className="text-lg font-bold text-purple-700">
                   BDT {listing.price.toLocaleString()}
                 </p>
               </div>
@@ -334,8 +357,8 @@ export function AdminListingReviewClient({
                   disabled={loadingAction !== null || listing.status === s}
                   className={`px-3 py-1.5 rounded-lg text-sm font-semibold capitalize transition-all ${
                     listing.status === s
-                      ? 'bg-gray-200 text-gray-600 cursor-default'
-                      : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+                      ? 'bg-gray-900 text-white cursor-default'
+                      : 'bg-purple-50 text-purple-700 border border-purple-100 hover:bg-purple-100'
                   }`}
                 >
                   {s}
@@ -349,14 +372,14 @@ export function AdminListingReviewClient({
             </p>
             <div className="space-y-3">
               <Button
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl"
                 onClick={handleApprove}
                 disabled={loadingAction !== null || listing.status === 'live'}
               >
                 {loadingAction === 'approve' ? 'Approving…' : 'Approve & publish'}
               </Button>
               <Button
-                className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold"
+                className="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl"
                 onClick={handleReject}
                 disabled={loadingAction !== null}
               >
@@ -364,7 +387,7 @@ export function AdminListingReviewClient({
               </Button>
               <Button
                 variant="outline"
-                className="w-full border-gray-300 text-gray-700 font-semibold"
+                className="w-full border-gray-300 text-gray-700 font-semibold rounded-xl"
                 onClick={handleDelete}
                 disabled={loadingAction !== null}
               >
