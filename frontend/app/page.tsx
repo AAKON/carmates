@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Search, Car, MapPin, DollarSign } from 'lucide-react';
+import { Search, Car, MapPin, DollarSign, FileText, Camera, CheckCircle, AlertCircle, ArrowRight } from 'lucide-react';
 
 interface Listing {
   _id: string;
@@ -80,7 +80,8 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/85 via-purple-600/80 to-purple-700/85" />
         <div className="relative max-w-4xl mx-auto text-center space-y-6 motion-safe:animate-in motion-safe:fade-in-0 motion-safe:zoom-in-95 motion-safe:duration-700 motion-safe:ease-out">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur-sm">
-            🚗 Live marketplace • Bangladesh
+            <Car className="w-4 h-4" />
+            Live marketplace • Bangladesh
           </div>
           <div className="space-y-4">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
@@ -95,8 +96,8 @@ export default async function HomePage() {
               asChild
               className="bg-white text-primary hover:bg-gray-50 font-semibold"
             >
-              <Link href="/cars">
-                Buy cars now <span aria-hidden>→</span>
+              <Link href="/cars" className="flex items-center gap-2">
+                Buy cars now <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
             <Button
@@ -213,8 +214,8 @@ export default async function HomePage() {
 
               {/* Error Message */}
               {loadError && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex gap-2">
-                  <span className="text-red-600">⚠️</span>
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex gap-2 items-center">
+                  <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
                   <p className="text-sm text-red-600 font-medium">{loadError}</p>
                 </div>
               )}
@@ -407,38 +408,43 @@ export default async function HomePage() {
           <div className="grid gap-6 md:grid-cols-3">
             {[
               {
-                icon: '📝',
+                icon: FileText,
                 title: 'List your car',
                 body: 'Add make, model, price, specs, and location details.'
               },
               {
-                icon: '📸',
+                icon: Camera,
                 title: 'Upload photos',
                 body: 'Add 5–20 high-quality images and set your cover photo.'
               },
               {
-                icon: '✅',
+                icon: CheckCircle,
                 title: 'Get approved',
                 body: 'We review for quality to ensure buyer confidence.'
               }
-            ].map((step, idx) => (
-              <Card key={idx} className="border-0 shadow-md hover:shadow-lg transition-shadow bg-white">
-                <CardContent className="p-8 text-center space-y-4">
-                  <div className="text-5xl">{step.icon}</div>
-                  <h3 className="font-bold text-lg text-gray-900">
-                    {step.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {step.body}
-                  </p>
-                  <div className="pt-4">
-                    <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white font-bold text-lg">
-                      {idx + 1}
+            ].map((step, idx) => {
+              const IconComponent = step.icon;
+              return (
+                <Card key={idx} className="border-0 shadow-md hover:shadow-lg transition-shadow bg-white">
+                  <CardContent className="p-8 text-center space-y-4">
+                    <div className="flex justify-center">
+                      <IconComponent className="w-16 h-16 text-primary" strokeWidth={1.5} />
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                    <h3 className="font-bold text-lg text-gray-900">
+                      {step.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      {step.body}
+                    </p>
+                    <div className="pt-4">
+                      <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white font-bold text-lg">
+                        {idx + 1}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -466,8 +472,8 @@ export default async function HomePage() {
               asChild
               className="bg-white text-primary hover:bg-gray-50 font-semibold text-base shadow-lg hover:shadow-xl transition-all px-8 py-6"
             >
-              <Link href="/cars">
-                Start browsing now →
+              <Link href="/cars" className="flex items-center gap-2">
+                Start browsing now <ArrowRight className="w-5 h-5" />
               </Link>
             </Button>
             <Button

@@ -14,7 +14,7 @@ export function Footer() {
         <div className="rounded-2xl bg-white/5 border border-white/10 px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
           <div className="flex items-center gap-4">
             <img
-              src="/images/logo.png"
+              src="/images/footer-icon.png"
               alt="carMates"
               className="h-11 w-auto object-contain flex-shrink-0 rounded-lg"
             />

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Heart } from 'lucide-react';
 
 interface FavoriteButtonProps {
   listingId: string;
@@ -47,13 +48,14 @@ export function FavoriteButton({
         type="button"
         onClick={toggle}
         disabled={loading}
-        className={`text-xs rounded-full px-2 py-1 border font-medium transition-colors ${
+        className={`text-xs rounded-full px-2 py-1 border font-medium transition-colors flex items-center gap-1 ${
           saved
             ? 'border-amber-400 text-amber-600 bg-amber-50'
             : 'border-white/70 text-white hover:border-white hover:bg-white/10'
         }`}
       >
-        {saved ? '♥ Saved' : '♡ Save'}
+        <Heart className={`w-3 h-3 ${saved ? 'fill-current' : ''}`} />
+        {saved ? 'Saved' : 'Save'}
       </button>
     );
   }
@@ -63,13 +65,14 @@ export function FavoriteButton({
       type="button"
       onClick={toggle}
       disabled={loading}
-      className={`rounded-lg px-3 py-2 text-sm border font-medium transition-colors w-full ${
+      className={`rounded-lg px-3 py-2 text-sm border font-medium transition-colors w-full flex items-center justify-center gap-2 ${
         saved
           ? 'border-amber-400 text-amber-600 bg-amber-50'
           : 'border-gray-300 text-gray-700 hover:border-amber-400 hover:bg-amber-50'
       }`}
     >
-      {saved ? '♥ Saved to favorites' : '♡ Save to favorites'}
+      <Heart className={`w-4 h-4 ${saved ? 'fill-current' : ''}`} />
+      {saved ? 'Saved to favorites' : 'Save to favorites'}
     </button>
   );
 }

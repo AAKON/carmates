@@ -13,7 +13,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'carMates - Buy & Sell Cars Online',
-  description: 'Browse thousands of verified car listings from trusted dealers and private sellers. Easy, secure, and transparent car shopping.'
+  description: 'Browse thousands of verified car listings from trusted dealers and private sellers. Easy, secure, and transparent car shopping.',
+  icons: {
+    icon: '/images/icon.png'
+  }
 };
 
 function NavbarFallback() {
