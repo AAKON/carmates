@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   Card,
   CardContent,
@@ -10,6 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Upload, Trash2 } from 'lucide-react';
 
 interface UserProfile {
   name: string;
@@ -36,10 +37,13 @@ interface AccountClientProps {
 }
 
 export function AccountClient({ user, dealerProfile }: AccountClientProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState(user.name);
   const [phone, setPhone] = useState(user.phone ?? '');
   const [city, setCity] = useState(user.city ?? '');
   const [area, setArea] = useState(user.area ?? '');
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const [dealerName, setDealerName] = useState(
     dealerProfile?.dealerName ?? ''
@@ -57,6 +61,80 @@ export function AccountClient({ user, dealerProfile }: AccountClientProps) {
   const [savingDealer, setSavingDealer] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const onImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    if (!file.type.startsWith('image/')) {
+      setError('Please select a valid image file.');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image size must be less than 5MB.');
+      return;
+    }
+
+    setError(null);
+    setSuccess(null);
+    setUploadingImage(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('profileImage', file);
+
+      const res = await fetch('/api/account/profile-image', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
+
+      const contentType = res.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Server returned invalid response. Please make sure the backend endpoint exists.');
+      }
+
+      const data = await res.json();
+      setProfileImage(data.data?.profileImageUrl || null);
+      setSuccess('Profile image updated successfully.');
+    } catch (err: any) {
+      setError(err.message || 'Failed to upload image. Make sure the backend endpoint /api/account/profile-image exists.');
+    } finally {
+      setUploadingImage(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const removeProfileImage = async () => {
+    setError(null);
+    setSuccess(null);
+    setUploadingImage(true);
+
+    try {
+      const res = await fetch('/api/account/profile-image', {
+        method: 'DELETE'
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.message || 'Failed to remove image');
+      }
+
+      setProfileImage(null);
+      setSuccess('Profile image removed.');
+    } catch (err: any) {
+      setError(err.message || 'Failed to remove image');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
 
   const saveProfile = async () => {
     setError(null);
@@ -209,6 +287,59 @@ export function AccountClient({ user, dealerProfile }: AccountClientProps) {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
+              {/* Profile Image Upload */}
+              <div className="space-y-2">
+                <Label className="block text-xs font-medium text-gray-600">
+                  Profile Picture
+                </Label>
+                <div className="flex items-center gap-4">
+                  {profileImage ? (
+                    <div className="relative">
+                      <img
+                        src={profileImage}
+                        alt="Profile"
+                        className="w-20 h-20 rounded-lg object-cover border border-gray-200"
+                      />
+                      <button
+                        type="button"
+                        onClick={removeProfileImage}
+                        disabled={uploadingImage}
+                        className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 disabled:opacity-50"
+                        title="Remove image"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="w-20 h-20 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50">
+                      <Upload className="w-5 h-5 text-gray-400" />
+                    </div>
+                  )}
+                  <div className="flex flex-col gap-2">
+                    <Button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={uploadingImage}
+                      size="sm"
+                      variant="outline"
+                      className="text-xs"
+                    >
+                      {uploadingImage ? 'Uploading...' : 'Choose image'}
+                    </Button>
+                    <p className="text-[10px] text-gray-500">
+                      Max 5MB. JPG, PNG
+                    </p>
+                  </div>
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={onImageUpload}
+                  className="hidden"
+                />
+              </div>
+
               <div className="space-y-1">
                 <Label className="block text-xs font-medium text-gray-600" htmlFor="profile-name">
                   Name

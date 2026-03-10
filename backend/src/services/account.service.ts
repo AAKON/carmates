@@ -13,6 +13,7 @@ export interface UserProfileDTO {
   phone?: string;
   city?: string;
   area?: string;
+  profileImageUrl?: string;
   account_type: UserDoc['account_type'];
   role: UserDoc['role'];
   status: UserDoc['status'];
@@ -41,6 +42,7 @@ function toUserProfileDTO(user: UserDoc): UserProfileDTO {
     phone: user.phone,
     city: user.city,
     area: user.area,
+    profileImageUrl: user.profileImageUrl,
     account_type: user.account_type,
     role: user.role,
     status: user.status
@@ -145,5 +147,34 @@ export async function upsertDealerProfile(
   );
 
   return toDealerProfileDTO(profile)!;
+}
+
+export async function updateProfileImage(
+  userId: string,
+  imageUrl: string
+): Promise<UserProfileDTO> {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw ApiError.notFound('User not found');
+  }
+
+  user.profileImageUrl = imageUrl;
+  await user.save();
+
+  return toUserProfileDTO(user);
+}
+
+export async function deleteProfileImage(
+  userId: string
+): Promise<UserProfileDTO> {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw ApiError.notFound('User not found');
+  }
+
+  user.profileImageUrl = undefined;
+  await user.save();
+
+  return toUserProfileDTO(user);
 }
 

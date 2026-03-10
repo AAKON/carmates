@@ -14,6 +14,7 @@ type User = {
   role: string;
   status: 'active' | 'blocked';
   createdAt: string;
+  profileImageUrl?: string;
 };
 
 function formatJoined(dateIso: string): string {
@@ -64,7 +65,7 @@ export function AdminUsersTableClient({ users }: { users: User[] }) {
         return (
           <div
             key={user.id}
-            className="group hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300"
+            className="group hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 transition-all duration-300"
           >
             {/* Summary row */}
             <div className="px-4 sm:px-6 lg:px-8 py-4">
@@ -79,15 +80,23 @@ export function AdminUsersTableClient({ users }: { users: User[] }) {
                     aria-controls={`user-${user.id}`}
                     title={isOpen ? 'Collapse row' : 'Expand row'}
                   >
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all duration-300">
-                      {initial}
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all duration-300 overflow-hidden">
+                      {user.profileImageUrl ? (
+                        <img
+                          src={user.profileImageUrl}
+                          alt={user.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        initial
+                      )}
                     </div>
                     <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-lg">
                       {index + 1}
                     </div>
                   </button>
                   <div className="min-w-0">
-                    <p className="font-bold text-gray-900 text-sm sm:text-base group-hover:text-blue-700 transition-colors truncate">
+                    <p className="font-bold text-gray-900 text-sm sm:text-base group-hover:text-primary transition-colors truncate">
                       {user.name}
                     </p>
                     <p className="text-[11px] text-gray-500 mt-0.5 font-mono">

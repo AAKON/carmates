@@ -11,6 +11,7 @@ export interface UserAttrs {
   phone?: string;
   city?: string;
   area?: string;
+  profileImageUrl?: string;
   account_type: AccountType;
   role?: UserRole;
   status?: UserStatus;
@@ -23,6 +24,7 @@ export interface UserDoc extends Document {
   phone?: string;
   city?: string;
   area?: string;
+  profileImageUrl?: string;
   account_type: AccountType;
   role: UserRole;
   status: UserStatus;
@@ -64,6 +66,11 @@ const userSchema = new Schema<UserDoc>(
       type: String,
       trim: true,
       maxlength: 80
+    },
+    profileImageUrl: {
+      type: String,
+      trim: true,
+      maxlength: 500
     },
     account_type: {
       type: String,

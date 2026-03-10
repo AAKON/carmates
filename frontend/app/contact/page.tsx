@@ -130,7 +130,7 @@ export default function ContactPage() {
                 <div>
                   <p className="font-medium">carMates HQ</p>
                   <p className="text-gray-600">
-                    Dhaka, Bangladesh
+                    Plot 12, Road 20, Nikunja 2, Dhaka, Bangladesh
                   </p>
                 </div>
               </div>
@@ -166,7 +166,7 @@ export default function ContactPage() {
           <div className="h-72 sm:h-[360px] lg:h-full w-full">
             <iframe
               title="carMates Dhaka map"
-              src="https://maps.google.com/maps?q=Dhaka%2C%20Bangladesh&t=&z=13&ie=UTF8&iwloc=&output=embed"
+              src="https://maps.google.com/maps?q=Plot%2012%2C%20Road%2020%2C%20Nikunja%202%2C%20Dhaka%2C%20Bangladesh&t=&z=15&ie=UTF8&iwloc=&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}

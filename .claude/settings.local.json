@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -n \"profileImageUrl\\\\|profileImage\" E:/Faisal/carmates/backend/src/models/*.ts 2>/dev/null)"
+    ]
+  }
+}

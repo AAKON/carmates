@@ -11,6 +11,7 @@ export interface AdminUserDTO {
   phone?: string;
   city?: string;
   area?: string;
+  profileImageUrl?: string;
   account_type: UserDoc['account_type'];
   role: UserDoc['role'];
   status: UserDoc['status'];
@@ -25,6 +26,7 @@ function toAdminUserDTO(user: UserDoc): AdminUserDTO {
     phone: user.phone,
     city: user.city,
     area: user.area,
+    profileImageUrl: user.profileImageUrl,
     account_type: user.account_type,
     role: user.role,
     status: user.status,

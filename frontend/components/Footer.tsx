@@ -100,7 +100,7 @@ export function Footer() {
             <div className="space-y-3 text-sm text-slate-200">
               <div className="flex gap-2">
                 <MapPin className="w-5 h-5 text-purple-300 flex-shrink-0 mt-0.5" />
-                <span>Dhaka, Bangladesh</span>
+                <span>Plot 12, Road 20, Nikunja 2, Dhaka, Bangladesh</span>
               </div>
               <div className="flex gap-2">
                 <Mail className="w-5 h-5 text-purple-300 flex-shrink-0 mt-0.5" />

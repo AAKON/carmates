@@ -3,11 +3,14 @@ import { z } from 'zod';
 import type { AuthRequest } from '../middlewares/auth';
 import { asyncHandler } from '../utils/asyncHandler';
 import { success } from '../utils/apiResponse';
+import { ApiError } from '../utils/ApiError';
 import { validateRequest } from '../utils/validation';
 import {
   getAccountProfile,
   updateUserProfile,
-  upsertDealerProfile
+  upsertDealerProfile,
+  updateProfileImage,
+  deleteProfileImage
 } from '../services/account.service';
 
 const updateProfileSchema = z.object({
@@ -55,6 +58,30 @@ export const upsertDealerProfileController = asyncHandler(
     const authUser = req.user!;
     const dealerProfile = await upsertDealerProfile(authUser.id, req.body);
     return success(res, dealerProfile, 'Dealer profile saved');
+  }
+);
+
+export const uploadProfileImage = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const authUser = req.user!;
+
+    if (!req.file) {
+      throw ApiError.badRequest('No image file provided');
+    }
+
+    const imageUrl = `/uploads/${req.file.filename}`;
+    const user = await updateProfileImage(authUser.id, imageUrl);
+
+    return success(res, { profileImageUrl: user.profileImageUrl }, 'Profile image uploaded');
+  }
+);
+
+export const deleteProfileImageController = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const authUser = req.user!;
+    await deleteProfileImage(authUser.id);
+
+    return success(res, {}, 'Profile image removed');
   }
 );
 

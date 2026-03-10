@@ -29,16 +29,16 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
    const [moreMenuOpen, setMoreMenuOpen] = useState(false);
-  const [user, setUser] = useState<{ role?: string } | null>(null);
+  const [user, setUser] = useState<{ role?: string; profileImageUrl?: string } | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    fetch('/api/auth/me')
+    fetch('/api/account/profile')
       .then((res) => res.json())
       .then((data) => {
         if (!cancelled) {
-          setUser(data.success && data.user ? data.user : null);
+          setUser(data.success && data.data?.user ? data.data.user : null);
         }
       })
       .catch(() => {
@@ -183,10 +183,18 @@ export function Navbar() {
                     <div className="relative hidden sm:block">
                       <button
                         onClick={() => setUserMenuOpen(!userMenuOpen)}
-                        className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-purple-100 to-purple-50 text-purple-700 hover:from-purple-200 hover:to-purple-100 transition-all border border-purple-100 shadow-sm"
+                        className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-purple-100 to-purple-50 text-purple-700 hover:from-purple-200 hover:to-purple-100 transition-all border border-purple-100 shadow-sm overflow-hidden"
                         title="Account menu"
                       >
-                        <User className="w-5 h-5" />
+                        {user?.profileImageUrl ? (
+                          <img
+                            src={user.profileImageUrl}
+                            alt="Profile"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <User className="w-5 h-5" />
+                        )}
                       </button>
 
                       {userMenuOpen && (
