@@ -2,7 +2,7 @@
   <!-- Stylized tire tread: repeating diagonal chevron blocks -->
   <defs>
     <!-- One diagonal tread block -->
-    <polygon id="blk" points="0,18 10,0 26,0 16,18" fill="rgba(124, 58, 237, 0.08)"/>
+    <polygon id="blk" points="0,18 10,0 26,0 16,18" fill="rgba(124, 58, 237, 0.05)"/>
   </defs>
 
   <!-- First track: left-to-right chevrons -->
